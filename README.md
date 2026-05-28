@@ -1,19 +1,17 @@
-# ✨ AstralUI v2.0
+# ✨ AstralUI v2.6
 
-**AstralUI** is a completely rewritten, premium-grade Roblox UI library — modern, beautiful, and packed with features that make WindUI look outdated.
+**AstralUI** is a complete ground-up rewrite of a Roblox UI library — cleaner, more beautiful, and more powerful than both the original VonLib and **WindUI**.
 
-- 🔹 1000000x better visuals than old libraries
-- 🔹 Sidebar navigation with icons (like top exploit UIs)
-- 🔹 Smooth animations, ripple effects, neon accents
-- 🔹 Full multi-language support (English, Español, Français, Deutsch, Português + easy to add more)
-- 🔹 7+ stunning themes (Dark, Midnight, Ocean, Rose, Emerald, Sunset, Neon)
-- 🔹 Draggable floating Stats HUD
-- 🔹 Background video support
-- 🔹 Config system, notifications, dialogs, badges
-- 🔹 DPI-aware auto-scaling (perfect on mobile, tablet, desktop, 4K)
-- 🔹 Made for the next generation of Roblox script hubs
+- 🔹 Modern sidebar navigation (exactly like top-tier hubs in your screenshot)
+- 🔹 WindUI-style fluent API + major visual & animation upgrades
+- 🔹 8 stunning themes with live switching
+- 🔹 Full built-in multi-language support (English, Español, Français, Deutsch, Português)
+- 🔹 Superior animations, ripple effects, and acrylic simulation
+- 🔹 All essential elements: Toggle, Slider, Button, Dropdown, Keybind, ColorPicker, Notifications, Dialogs, Stats HUD
+- 🔹 DPI auto-scaling, draggable windows & HUD, config system
+- 🔹 Made for serious script hubs in 2026
 
-> **"This is what a 2026 UI library should look like."**
+> **"This is what a real modern Roblox UI library should look like."**
 
 ---
 
@@ -25,48 +23,36 @@ local AstralUI = loadstring(game:HttpGet(
 ))()
 
 local Window = AstralUI:CreateWindow({
-    Title = "VoidHub : Build-A-Ring-Farm",
-    SubTitle = "by von63rd • v2.0",
-    Size = UDim2.fromOffset(620, 420)
+    Title = "VoidHub",
+    Theme = "Dark",
+    SideBarWidth = 58,
+    Acrylic = true
 })
 
--- Create beautiful sidebar tabs
-local MainTab = Window:CreateTab({ Title = "Core", Icon = "rbxassetid://10709791437" })
-local ConfigTab = Window:CreateTab({ Title = "Settings", Icon = "rbxassetid://10734982144" })
+local Main = Window:Tab({ Title = "Core Automation", Icon = "rbxassetid://10709791437" })
 
--- Add stunning elements
-MainTab:AddSection("Automation")
-
-MainTab:AddToggle({
-    Name = "Auto Unlock All Plots",
-    Default = false,
-    Badge = "New",
+Main:Toggle({
+    Title = "Auto Unlock All Plots",
+    Value = false,
     Flag = "auto_unlock",
-    Callback = function(v)
-        Window:Notify({ Title = "Automation", Content = "Auto Unlock: " .. tostring(v) })
-    end
+    Callback = function(v) print("Auto Unlock:", v) end
 })
 
-MainTab:AddSlider({
-    Name = "Plant Interval (sec)",
-    Min = 1, Max = 60, Default = 10, Increment = 1,
-    Flag = "plant_interval",
-    Callback = function(v) print("Interval:", v) end
+Main:Slider({
+    Title = "Plant Interval (sec)",
+    Min = 5, Max = 30, Default = 10,
+    Flag = "plant_interval"
 })
 
-MainTab:AddButton({
-    Name = "Force Plant All",
-    Badge = "Hot",
+Main:Button({
+    Title = "Force Plant All",
     Callback = function()
         Window:Notify({ Title = "Success", Content = "All plots planted!" })
     end
 })
 
--- Stats HUD (draggable floating overlay)
 local HUD = Window:MakeStatsHUD({
-    Stats = {"Ping", "FPS", "Playtime", "Time", "Players"},
-    Position = UDim2.new(0, 12, 0.5, 0)
+    Stats = {"Ping", "FPS", "Playtime", "Time", "Players"}
 })
 
--- Change language live
-AstralUI:SetLanguage("es") -- Español
+AstralUI:SetLanguage("en") -- or "es", "fr", "de", "pt"
