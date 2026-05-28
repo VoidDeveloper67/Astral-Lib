@@ -1,22 +1,41 @@
+<div align="center">
+
 # 🦊 Foxy Library
 
-A clean, themeable, mobile-friendly Roblox UI library.  
-Drop `Main.lua` into your script and you’re ready to go.
+**A clean, themeable, mobile-friendly Roblox UI library.**
+
+[![Lua](https://img.shields.io/badge/Language-Lua-blue?style=flat-square)](https://www.lua.org/)
+[![Roblox](https://img.shields.io/badge/Platform-Roblox-red?style=flat-square)](https://www.roblox.com/)
+[![License](https://img.shields.io/badge/License-Free-green?style=flat-square)]()
+
+</div>
 
 -----
 
-## Quick Start
+## 📦 Load
 
 ```lua
-local FoxyLib = loadstring(game:HttpGet("YOUR_RAW_URL"))()
+local FoxyLib = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/VoidDeveloper67/Foxy-Library/main/Main.lua"
+))()
+```
+
+-----
+
+## ⚡ Quick Start
+
+```lua
+local FoxyLib = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/VoidDeveloper67/Foxy-Library/main/Main.lua"
+))()
 
 local lib = FoxyLib.new({
-    Name         = "My Script",
-    AccentColor  = Color3.fromRGB(130, 75, 255),
+    Name        = "My Script",
+    AccentColor = Color3.fromRGB(130, 75, 255),
 })
 
-local section = lib:AddSection("Main")
-local tab     = section:AddTab({ Name = "Combat" })
+local section = lib:CreateSection({ Name = "Main" })
+local tab     = section:AddTab({ Name = "Combat", Description = "Combat features" })
 local group   = tab:AddGroup({ Name = "Settings" })
 
 group:AddToggle({
@@ -30,53 +49,51 @@ group:AddToggle({
 
 -----
 
-## Creating the Library
-
-```lua
-local lib = FoxyLib.new(config)
-```
-
-|Field            |Type  |Default         |Description                               |
-|-----------------|------|----------------|------------------------------------------|
-|`Name`           |string|`"Foxy Library"`|Window title shown in the UI              |
-|`AccentColor`    |Color3|Blue            |Highlight color for toggles, sliders, etc.|
-|`BackgroundColor`|Color3|Dark grey       |Main window background                    |
-|`SecondaryColor` |Color3|Slightly lighter|Secondary panels / groups                 |
-|`TextColor`      |Color3|White           |Primary text                              |
-|`SubTextColor`   |Color3|Grey            |Labels, hints                             |
-
------
-
-## Structure
-
-The UI follows a 4-level hierarchy:
+## 🏗️ UI Structure
 
 ```
-lib  (library)
- └─ Section  :AddSection(name)
-      └─ Tab      :AddTab({ Name })
-           └─ Group   :AddGroup({ Name })
-                └─ Widgets  (toggle, slider, button …)
+FoxyLib.new()                  -- creates the window
+  └─ lib:CreateSection()       -- left-side nav section
+       └─ section:AddTab()     -- tab inside a section
+            └─ tab:AddGroup()  -- group/box inside a tab
+                 └─ Widgets    -- toggle, slider, button …
 ```
 
 -----
 
-## `lib` Methods
+## 🎨 `FoxyLib.new(config)`
 
-### `lib:AddSection(name)`
+|Field            |Type  |Default         |Description                        |
+|-----------------|------|----------------|-----------------------------------|
+|`Name`           |string|`"Foxy Library"`|Window title                       |
+|`AccentColor`    |Color3|Blue            |Highlight color for active elements|
+|`BackgroundColor`|Color3|Dark grey       |Main window background             |
+|`SecondaryColor` |Color3|Slightly lighter|Secondary panels                   |
+|`TextColor`      |Color3|White           |Primary text                       |
+|`SubTextColor`   |Color3|Grey            |Labels and hints                   |
 
-Creates a new section (a top-level page/nav entry).  
-Returns a **sectionObj**.
+-----
+
+## 📚 Library Methods
+
+### `lib:CreateSection(config)`
+
+Creates a left-side navigation section. Returns a **sectionObj**.
+
+|Field |Type             |Default     |
+|------|-----------------|------------|
+|`Name`|string           |`"Section"` |
+|`Icon`|string (asset id)|default icon|
 
 ```lua
-local section = lib:AddSection("Visuals")
+local section = lib:CreateSection({ Name = "Visuals" })
 ```
 
 -----
 
 ### `lib:SetToggleKey(keyCode)`
 
-Sets the keyboard key that shows/hides the menu.
+Sets the key that shows/hides the menu.
 
 ```lua
 lib:SetToggleKey(Enum.KeyCode.Insert)
@@ -86,20 +103,36 @@ lib:SetToggleKey(Enum.KeyCode.Insert)
 
 ### `lib:ToggleUI()`
 
-Programmatically show or hide the menu.
+Programmatically show or hide the window.
+
+-----
+
+### `lib:SetAccentColor(color)`
+
+Updates the accent color live across all elements.
+
+```lua
+lib:SetAccentColor(Color3.fromRGB(255, 100, 50))
+```
 
 -----
 
 ### `lib:Notify(config)`
 
-Shows a toast notification in the corner.
+Shows a toast notification.
+
+|Field        |Type             |Default         |
+|-------------|-----------------|----------------|
+|`Title`      |string           |`"Notification"`|
+|`Description`|string           |*(none)*        |
+|`Duration`   |number           |`3` (min `0.8`) |
+|`Icon`       |string (asset id)|default icon    |
 
 ```lua
 lib:Notify({
-    Title       = "Loaded",
-    Description = "Script v1.0 ready.",
-    Duration    = 3,                          -- seconds (min 0.8)
-    Icon        = "rbxassetid://10747361219", -- optional image id
+    Title       = "Loaded!",
+    Description = "Foxy Library v1.0",
+    Duration    = 3,
 })
 ```
 
@@ -107,7 +140,7 @@ lib:Notify({
 
 ### `lib:SaveConfig(fileName)`
 
-Saves all control values to `FoxyConfigs/<fileName>.json`.  
+Saves all control values to `FoxyConfigs/<fileName>.json`.
 Returns `true, path` on success or `false, errorMessage`.
 
 ```lua
@@ -118,7 +151,7 @@ local ok, result = lib:SaveConfig("default")
 
 ### `lib:LoadConfig(fileName)`
 
-Loads and applies a saved config.  
+Loads and applies a saved config file.
 Returns `true, path` on success or `false, errorMessage`.
 
 ```lua
@@ -133,59 +166,67 @@ Destroys the entire UI and disconnects all connections.
 
 -----
 
-## Section → Tab
+## 🗂️ Section → Tab → Group
 
 ### `section:AddTab(config)`
 
+|Field        |Type             |Default            |
+|-------------|-----------------|-------------------|
+|`Name`       |string           |`"Tab"`            |
+|`Description`|string           |`"Tab description"`|
+|`Icon`       |string (asset id)|default icon       |
+
 ```lua
-local tab = section:AddTab({ Name = "Tab Name" })
+local tab = section:AddTab({
+    Name        = "Aimbot",
+    Description = "Aim assistance features",
+})
 ```
 
-Returns a **tabObj**. Methods: `:Activate()`, `:Deactivate()`.
-
 -----
-
-## Tab → Group
 
 ### `tab:AddGroup(config)`
 
+|Field |Type             |Default     |
+|------|-----------------|------------|
+|`Name`|string           |`"Group"`   |
+|`Side`|string           |`"Left"`    |
+|`Icon`|string (asset id)|default icon|
+
+`Side` can be `"Left"` or `"Right"` to place groups in two columns.
+
 ```lua
-local group = tab:AddGroup({ Name = "Group Name" })
+local group = tab:AddGroup({ Name = "Settings", Side = "Left" })
 ```
 
-Returns a **groupObj** to which you add all widgets.
-
 -----
 
-## Widgets
+## 🧩 Widgets
 
-All widgets are added to a **group**. Every widget that holds a value has:
+Every value-holding widget supports:
 
-- **`:Set(value)`** — programmatically update the value
+- **`:Set(value)`** — update the value programmatically
 - **`:Get()`** — read the current value
-- **`Flag`** field — unique string key used by `SaveConfig`/`LoadConfig`
+- **`Flag`** — unique string key used by `SaveConfig` / `LoadConfig` (auto-generated if omitted)
 
 -----
 
-### Toggle
+### ✅ Toggle
 
 ```lua
 local toggle = group:AddToggle({
     Name     = "Aimbot",
-    Default  = false,         -- initial state
-    Flag     = "aimbot",      -- save key (auto-generated if omitted)
-    Callback = function(value)
-        -- value is true/false
-    end,
+    Default  = false,
+    Flag     = "aimbot",
+    Callback = function(value) end,
 })
-
 toggle:Set(true)
-print(toggle:Get())  -- true
+toggle:Get()  -- true
 ```
 
 -----
 
-### Slider
+### 🎚️ Slider
 
 ```lua
 local slider = group:AddSlider({
@@ -193,195 +234,185 @@ local slider = group:AddSlider({
     Min       = 10,
     Max       = 360,
     Default   = 90,
-    Increment = 1,            -- step size
+    Increment = 1,
     Flag      = "fov",
-    Callback  = function(value)
-        print("FOV:", value)
-    end,
+    Callback  = function(value) end,
 })
-
 slider:Set(120)
 ```
 
 -----
 
-### Button
+### 🔘 Button
 
 ```lua
 group:AddButton({
     Name     = "Teleport Home",
     Icon     = "rbxassetid://...",  -- optional
-    Locked   = false,               -- greys out the button if true
-    Callback = function()
-        -- fired on click
-    end,
+    Locked   = false,               -- greys out if true
+    Callback = function() end,
 })
 ```
 
 -----
 
-### Dropdown
+### 📋 Dropdown
 
 ```lua
 local dd = group:AddDropdown({
-    Name    = "Target Part",
-    Options = { "Head", "Torso", "HumanoidRootPart" },
-    Default = "Head",
-    Flag    = "aimTarget",
-    Callback = function(value)
-        print("Selected:", value)
-    end,
+    Name     = "Target Part",
+    Options  = { "Head", "Torso", "HumanoidRootPart" },
+    Default  = "Head",
+    Flag     = "aimTarget",
+    Callback = function(value) end,
 })
-
 dd:Set("Torso")
-print(dd:Get())  -- "Torso"
 ```
 
-**Dynamic options** — use `OptionsProvider` to refresh the list automatically:
+**Dynamic options** — use `OptionsProvider` to auto-refresh the list:
 
 ```lua
 group:AddDropdown({
     Name            = "Players",
     OptionsProvider = function()
-        local names = {}
+        local t = {}
         for _, p in ipairs(game.Players:GetPlayers()) do
-            table.insert(names, p.Name)
+            table.insert(t, p.Name)
         end
-        return names
+        return t
     end,
-    AutoRefresh     = true,   -- re-calls OptionsProvider periodically
-    RefreshInterval = 1,      -- seconds between refreshes
+    AutoRefresh     = true,
+    RefreshInterval = 1,
     Callback = function(value) end,
 })
 ```
 
 -----
 
-### Multi-Select Dropdown
+### 📋 Multi-Select Dropdown
 
 ```lua
 local mdd = group:AddMultiDropdown({
     Name     = "Features",
     Options  = { "ESP", "Aimbot", "Fly", "NoClip" },
-    Default  = { "ESP" },     -- table of initially selected options
+    Default  = { "ESP" },       -- table of pre-selected options
     Flag     = "features",
-    Callback = function(selected)
-        -- selected is a table: { "ESP", "Fly" }
-    end,
+    Callback = function(selected) end,  -- selected is a table
 })
 ```
 
 -----
 
-### Keybind
+### ⌨️ Keybind
 
 ```lua
-local kb = group:AddKeybind({
-    Name              = "Fly Key",
-    Default           = Enum.KeyCode.F,
-    Mode              = "Toggle",    -- "Toggle" or "Hold"
-    Flag              = "flyKey",
-    Callback          = function(active) end,   -- fired when key activates
-    ChangedCallback   = function(newKey) end,   -- fired when key is rebound
+group:AddKeybind({
+    Name                = "Fly Key",
+    Default             = Enum.KeyCode.F,
+    Mode                = "Toggle",         -- "Toggle" or "Hold"
+    Flag                = "flyKey",
+    Callback            = function(active) end,
+    ChangedCallback     = function(newKey) end,
     ModeChangedCallback = function(mode) end,
 })
 ```
 
 -----
 
-### Keybind Toggle
+### ⌨️ Keybind Toggle
 
-A combined keybind + toggle in one row — the keybind activates the feature and the toggle switches it on/off.
+A keybind and a toggle combined in one row.
 
 ```lua
 group:AddKeybindToggle({
-    Name          = "Aimbot",
-    Default       = false,
-    KeyDefault    = Enum.KeyCode.Q,
-    KeyMode       = "Hold",
-    Flag          = "aimbotEnabled",
-    KeyFlag       = "aimbotKey",
-    Callback      = function(value) end,
-    KeyCallback   = function(active) end,
+    Name        = "Aimbot",
+    Default     = false,
+    KeyDefault  = Enum.KeyCode.Q,
+    KeyMode     = "Hold",
+    Flag        = "aimbotEnabled",
+    KeyFlag     = "aimbotKey",
+    Callback    = function(value) end,
+    KeyCallback = function(active) end,
 })
 ```
 
 -----
 
-### Color Picker
+### 🎨 Color Picker
 
 ```lua
 local cp = group:AddColorPicker({
     Name     = "ESP Color",
     Default  = Color3.fromRGB(255, 50, 50),
     Flag     = "espColor",
-    Callback = function(color)
-        -- color is a Color3
-    end,
+    Callback = function(color) end,
 })
-
 cp:Set(Color3.fromRGB(0, 255, 128))
-print(cp:Get())
 ```
 
 -----
 
-### Text Input
+### ✏️ Text Input
 
 ```lua
-local input = group:AddTextInput({
-    Name        = "Custom Name",
+group:AddTextInput({
+    Name        = "Player Name",
     Placeholder = "Enter name...",
     Default     = "",
-    Flag        = "customName",
-    Callback    = function(text)
-        print("Entered:", text)
-    end,
+    Flag        = "playerName",
+    Callback    = function(text) end,
 })
 ```
 
 -----
 
-### Label
+### 🏷️ Label
 
 ```lua
 group:AddLabel({
     Text = "This is an info label.",
-    Wrap = true,   -- wrap to multiple lines if needed
+    Wrap = true,    -- wrap to multiple lines if needed
 })
 ```
 
 -----
 
-### Divider
+### ─ Divider
 
 ```lua
 group:AddDivider()
 ```
 
-Inserts a thin horizontal rule between elements.
-
 -----
 
-## Flags & Config System
+## 💾 Config System
 
-Every control that holds a value accepts a `Flag` key. Flags are used to save and restore configs:
+Set explicit `Flag` strings on controls so saved configs stay stable across updates:
 
 ```lua
--- Save current state of all controls
-lib:SaveConfig("slot1")   -- writes FoxyConfigs/slot1.json
-
--- Restore it later
-lib:LoadConfig("slot1")
+group:AddToggle({ Name = "ESP", Flag = "esp_enabled", Callback = ... })
 ```
 
-Auto-generated flags are derived from the widget name, but **explicit flags are recommended** for stability across script updates.
+Then save and load anywhere:
+
+```lua
+lib:SaveConfig("slot1")   -- writes to FoxyConfigs/slot1.json
+lib:LoadConfig("slot1")   -- restores all control values
+```
 
 -----
 
-## Tips
+## 💡 Tips
 
-- **Mobile support** — the library auto-detects touch devices and scales everything down via `mobileScaleFactor`.
-- **Theme at runtime** — change `lib.config.AccentColor` then call `lib:CreateUIBecauseWeNeedIt()` to rebuild, or tween the color on individual elements.
-- **Overlay effects** — Snow, Rain, Stars and None modes are built in. Call `lib:_SetOverlayMode("Snow")` to activate.
-- **Text gradient** — call `lib:_SetTextGradientEnabled(true)` for animated gradient labels.
+- **Mobile** — auto-detected; UI scales down automatically on touch devices.
+- **Accent color** — update live with `lib:SetAccentColor(color)`.
+- **Overlay effects** — Snow, Rain, Stars. Use `lib:_SetOverlayMode("Snow")`.
+- **Text gradient** — `lib:_SetTextGradientEnabled(true)` animates label colors.
+- **Background FX** — `lib:_SetBackgroundEffectsEnabled(true)`.
+- **Executor support** — works with `syn.protect_gui`, `gethui`, or falls back to `PlayerGui`.
+
+-----
+
+<div align="center">
+Made by <b>VoidDeveloper67</b>
+</div>
