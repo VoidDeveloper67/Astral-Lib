@@ -1,21 +1,19 @@
-# ✨ AstralUI v2.6
+# ✨ AstralUI v3.0
 
-**AstralUI** is a complete ground-up rewrite of a Roblox UI library — cleaner, more beautiful, and more powerful than both the original VonLib and **WindUI**.
+**AstralUI v3.0** is a high-quality, modern Roblox UI library extracted and cleaned from a premium source. It features a beautiful sidebar, smooth animations, visual effects (blur, snow, rain, stars, text gradients), mobile support, and a clean fluent API.
 
-- 🔹 Modern sidebar navigation (exactly like top-tier hubs in your screenshot)
-- 🔹 WindUI-style fluent API + major visual & animation upgrades
-- 🔹 8 stunning themes with live switching
-- 🔹 Full built-in multi-language support (English, Español, Français, Deutsch, Português)
-- 🔹 Superior animations, ripple effects, and acrylic simulation
-- 🔹 All essential elements: Toggle, Slider, Button, Dropdown, Keybind, ColorPicker, Notifications, Dialogs, Stats HUD
-- 🔹 DPI auto-scaling, draggable windows & HUD, config system
-- 🔹 Made for serious script hubs in 2026
-
-> **"This is what a real modern Roblox UI library should look like."**
+- Modern sidebar navigation (matches top-tier hubs)
+- Excellent animations and ripple effects
+- 8+ visual effects (Blur, Snow, Rain, Stars, Text Gradient, etc.)
+- Full element support: Toggle, Slider, Button, Dropdown (with search), Keybind, ColorPicker
+- Notifications, Stats HUD, Draggable window
+- Mobile-optimized scaling
+- Config system + font presets
+- Much better than previous versions and WindUI
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```lua
 local AstralUI = loadstring(game:HttpGet(
@@ -24,35 +22,13 @@ local AstralUI = loadstring(game:HttpGet(
 
 local Window = AstralUI:CreateWindow({
     Title = "VoidHub",
-    Theme = "Dark",
-    SideBarWidth = 58,
-    Acrylic = true
+    AccentColor = Color3.fromRGB(130, 75, 255)
 })
 
 local Main = Window:Tab({ Title = "Core Automation", Icon = "rbxassetid://10709791437" })
 
-Main:Toggle({
-    Title = "Auto Unlock All Plots",
-    Value = false,
-    Flag = "auto_unlock",
-    Callback = function(v) print("Auto Unlock:", v) end
-})
+Main:Toggle({ Title = "Auto Unlock All Plots", Value = false, Flag = "unlock" })
+Main:Slider({ Title = "Plant Interval", Min = 5, Max = 30, Default = 10, Flag = "interval" })
+Main:Button({ Title = "Force Plant All", Callback = function() Window:Notify({Title="Done"}) end })
 
-Main:Slider({
-    Title = "Plant Interval (sec)",
-    Min = 5, Max = 30, Default = 10,
-    Flag = "plant_interval"
-})
-
-Main:Button({
-    Title = "Force Plant All",
-    Callback = function()
-        Window:Notify({ Title = "Success", Content = "All plots planted!" })
-    end
-})
-
-local HUD = Window:MakeStatsHUD({
-    Stats = {"Ping", "FPS", "Playtime", "Time", "Players"}
-})
-
-AstralUI:SetLanguage("en") -- or "es", "fr", "de", "pt"
+Window:MakeStatsHUD({ Stats = {"Ping","FPS","Playtime","Time"} })
